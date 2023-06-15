@@ -1,0 +1,36 @@
+import tkinter as tk
+import requests
+
+def get_weather():
+    city = city_entry.get()
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid=04427f5809216e13578635057b00380b"
+    response = requests.get(url)
+    weather_data = response.json()
+
+    weather = weather_data["weather"][0]["main"]
+    temperature = weather_data["main"]["temp"]
+    temperature = round(temperature - 273.15, 2)  # Convert temperature to Celsius
+
+    weather_label.config(text=f"Weather: {weather}")
+    temperature_label.config(text=f"Temperature: {temperature}°C")
+
+# Create the main window
+window = tk.Tk()
+window.title("Weather Application")
+
+# Create the widgets
+city_label = tk.Label(window, text="City:")
+city_entry = tk.Entry(window)
+get_weather_button = tk.Button(window, text="Get Weather", command=get_weather)
+weather_label = tk.Label(window, text="Weather: ")
+temperature_label = tk.Label(window, text="Temperature: ")
+
+# Place the widgets on the window
+city_label.pack()
+city_entry.pack()
+get_weather_button.pack()
+weather_label.pack()
+temperature_label.pack()
+
+# Start the main loop
+window.mainloop()
